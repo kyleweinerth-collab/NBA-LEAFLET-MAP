@@ -1,0 +1,58 @@
+---
+title: "NBA Arenas Map"
+author: "Kyle W."
+date: "3/27/2026"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+# Install required packages if needed (run once)
+if (!requireNamespace("leaflet", quietly = TRUE)) install.packages("leaflet")
+if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
+if (!requireNamespace("rmarkdown", quietly = TRUE)) install.packages("rmarkdown")
+library(leaflet)
+library(dplyr)
+
+# Creation date (explicitly printed on page for rubric)
+creation_date <- Sys.Date()
+```
+
+## OVERVIEW
+This page shows a small NBA‑focused interactive map built with leaflet. The dataset is created inside this document so it is fully reproducible.
+Creation date: r creation_date
+
+## NBA SAMPLE DATASET
+```{r data, echo=TRUE}
+# Small reproducible NBA dataset (team, arena, lat, lon, short description)
+nba_arenas <- tibble::tribble(
+  ~team, ~arena, ~lat, ~lon, ~popup,
+  "Los Angeles Lakers", "Crypto.com Arena", 34.0430175, -118.2672541, "Los Angeles Lakers — Crypto.com Arena",
+  "Golden State Warriors", "Chase Center", 37.7680, -122.3877, "Golden State Warriors — Chase Center",
+  "Boston Celtics", "TD Garden", 42.3662, -71.0621, "Boston Celtics — TD Garden",
+  "Chicago Bulls", "United Center", 41.8807, -87.6742, "Chicago Bulls — United Center",
+  "Miami Heat", "Kaseya Center", 25.7814, -80.1870, "Miami Heat — Kaseya Center"
+)
+
+# Show the dataset
+nba_arenas
+```
+
+## INTERACTIVE LEAFLET MAP
+```{r map, echo=FALSE, message=FALSE}
+# Basic leaflet map with markers and popups
+leaflet(data = nba_arenas) %>%
+  addTiles() %>%
+  setView(lng = -95.7129, lat = 37.0902, zoom = 3) %>%
+  addMarkers(
+    ~lon, ~lat,
+    popup = ~paste0("<b>", team, "</b><br/>", arena, "<br/>", popup),
+    label = ~team,
+    options = leaflet::markerOptions(riseOnHover = TRUE)
+  )
+```
+
+## DOWNLOADABLE CSV
+```{r writecsv, echo=TRUE}
+# Write a local CSV copy (renders when knitting locally)
+write.csv(nba_arenas, "nba_arenas_sample.csv", row.names = FALSE)
+```

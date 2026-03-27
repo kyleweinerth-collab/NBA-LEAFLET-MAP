@@ -1,0 +1,14 @@
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+  color: #222;
+  margin: 20px;
+}
+h1, h2, h3 {
+  color: #0b3d91;
+}
+.leaflet-container {
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  height: 600px !important;
+}
